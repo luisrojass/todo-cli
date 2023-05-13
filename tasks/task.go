@@ -5,39 +5,52 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/fatih/color"
+	"github.com/rodaine/table"
 )
 
 type Task struct {
-	// ID       int    `json:"id"`
-	Name     string `json:"name"`
-	Complete bool   `json:"complete"`
+	Name     string    `json:"name"`
+	Complete bool      `json:"complete"`
+	Date     time.Time `json:"date"`
 }
 
 func PrintTasks(tasks []Task) {
+	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+	columnFmt := color.New(color.FgYellow).SprintfFunc()
+
+	tbl := table.New("ID", "Name", "Done", "Added")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
+
 	var incompleteTasks int
+	var date string
 
 	for i, task := range tasks {
-
-		var complete rune = '✔'
+		complete := "✔"
 		if task.Complete == false {
-			complete = ' '
+			complete = " "
 			incompleteTasks++
 		}
-
-		fmt.Printf("  [%d][%c] %s\n", i+1, complete, task.Name)
+		date = fmt.Sprintf(
+			"%d/%02d/%02d",
+			task.Date.Year(),
+			task.Date.Month(),
+			task.Date.Day(),
+		)
+		tbl.AddRow(i+1, task.Name, complete, date)
 	}
 
-	fmt.Printf("There's (%d) remaining task", incompleteTasks)
-	if incompleteTasks > 1 {
-		fmt.Printf("s")
-	}
-	fmt.Printf("\n")
+	tbl.Print()
+	fmt.Printf("\nThere's (%d) remaining tasks\n", incompleteTasks)
 }
 
 func AddTask(tasks []Task, name string) []Task {
 	newTask := Task{
 		Name:     name,
 		Complete: false,
+		Date:     time.Now(),
 	}
 
 	return append(tasks, newTask)

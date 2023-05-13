@@ -95,7 +95,7 @@ func main() {
 func printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println("  ls\t\t\tShow all tasks")
-	fmt.Println("  add <args> [string]\tAdd a task, no limit of words")
+	fmt.Println("  add <args> [string]\tAdd a task, without quotes, no limit of words")
 	fmt.Println("  do <args> [int] \tMark selected task as completed")
 	fmt.Println("  undo <args> [int] \tMark selected task as incompleted")
 	fmt.Println("  rm <args> [int]\tDelete selected task")
