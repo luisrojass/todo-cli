@@ -5,15 +5,23 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
-	task "github.com/luisrojass/cli-crud/tasks"
+	task "github.com/luisrojass/todo/tasks"
 )
 
 func main() {
+	executablePath, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	relativePath := "todo_db.json"
+	absolutePath := filepath.Join(filepath.Dir(executablePath), relativePath)
+
 	// int 0666 means that has read and write permissions for the file
-	file, err := os.OpenFile("db.json", os.O_RDWR|os.O_CREATE, 0666)
+	file, err := os.OpenFile(absolutePath, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		panic(err)
 	}

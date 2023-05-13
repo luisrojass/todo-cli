@@ -1,4 +1,4 @@
-module github.com/luisrojass/cli-crud
+module github.com/luisrojass/todo
 
 go 1.20
 
